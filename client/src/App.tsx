@@ -3,7 +3,6 @@ import useSWR from "swr";
 import "./App.css";
 import AddTodo from "./components/AddTodo";
 import { CheckCircleFillIcon } from "@primer/octicons-react";
-import MoreInfo from "./components/MoreInfo";
 
 export interface Todo {
   id: number;
