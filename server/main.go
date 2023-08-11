@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 type Todo struct {
@@ -15,9 +16,14 @@ type Todo struct {
 }
 
 func main() {
-	fmt.Print("Hello World")
+	fmt.Print("Server running OK!")
 
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	todos := []Todo{}
 
@@ -51,7 +57,7 @@ func main() {
 
 		for i, t := range todos {
 			if t.ID == id {
-				todos[i].Done = true
+				todos[i].Done = !todos[i].Done
 				break
 			}
 		}
