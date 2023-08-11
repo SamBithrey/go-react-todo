@@ -2,7 +2,7 @@ import { Box, List, ThemeIcon } from "@mantine/core";
 import useSWR from "swr";
 import "./App.css";
 import AddTodo from "./components/AddTodo";
-import { CheckCircleFillIcon } from "@primer/octicons-react";
+import { CheckCircleFillIcon, CircleSlashIcon } from "@primer/octicons-react";
 
 export interface Todo {
   id: number;
@@ -27,6 +27,14 @@ function App() {
     mutate(updated);
   }
 
+  async function deleteTodo(id: number) {
+    const updated = await fetch(`${ENDPOINT}/api/todos/${id}/delete`, {
+      method: "DELETE",
+    }).then((res) => res.json());
+
+    mutate(updated);
+  }
+
   return (
     <Box
       sx={() => ({
@@ -42,16 +50,45 @@ function App() {
             key={`todo__${todo.id}`}
             icon={
               todo.done ? (
-                <ThemeIcon color="teal" size={24} radius="xl">
-                  <CheckCircleFillIcon size={20} />
-                </ThemeIcon>
+                <>
+                  <ThemeIcon
+                    color="teal"
+                    size={24}
+                    radius="xl"
+                    onClick={() => markTodoDone(todo.id)}
+                  >
+                    <CheckCircleFillIcon size={20} />
+                  </ThemeIcon>
+                  <ThemeIcon
+                    color="red"
+                    size={24}
+                    radius="xl"
+                    onClick={() => deleteTodo(todo.id)}
+                  >
+                    <CircleSlashIcon size={20} />
+                  </ThemeIcon>
+                </>
               ) : (
-                <ThemeIcon color="gray" size={24} radius="xl">
-                  <CheckCircleFillIcon size={20} />
-                </ThemeIcon>
+                <>
+                  <ThemeIcon
+                    color="gray"
+                    size={24}
+                    radius="xl"
+                    onClick={() => markTodoDone(todo.id)}
+                  >
+                    <CheckCircleFillIcon size={20} />
+                  </ThemeIcon>
+                  <ThemeIcon
+                    color="red"
+                    size={24}
+                    radius="xl"
+                    onClick={() => deleteTodo(todo.id)}
+                  >
+                    <CircleSlashIcon size={20} />
+                  </ThemeIcon>
+                </>
               )
             }
-            onClick={() => markTodoDone(todo.id)}
           >
             {todo.title}
           </List.Item>
